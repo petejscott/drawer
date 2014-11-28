@@ -1,0 +1,80 @@
+html {
+	height: 100%;
+	font-size: 1em;
+	line-height: 1.5em;
+}
+body {
+	background: #066aad;
+	color: #eef;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+	overflow-y: auto;
+}
+body, input {
+	font-family: 	Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT",
+					"Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L",
+					Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+header,
+#drawer nav,
+#main section {
+	padding:0 1rem;
+}
+
+#main {
+	height: 100%;
+}
+#main header {
+	background:#0062a5;
+}
+header h1 { 
+	font-size:1rem;
+	line-height:3rem;
+	display:inline-block; 
+	margin:0; 
+}
+
+#drawer {
+	height: 100%;
+	width: 90%;
+	max-width:320px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: #fff;
+	color:#333;
+	z-index: 100;
+	transition: transform 0.5s;
+	transform: translateX(-100%);
+}
+#drawer header {
+	background:#eee;
+}
+#drawer.visible {
+	box-shadow:0 0 4px rgba(0,0,0,0.75);
+	transform: translateX(0);
+}
+#drawer.flyoff {
+	animation: flyoff-left 0.25s;
+	-webkit-animation: flyoff-left 0.25s;
+}
+
+nav ul {
+	margin:1em 0; 
+	padding:0;
+	list-style:none;
+}
+
+@keyframes flyoff-left {
+	100% {
+		transform: translateX(-100%);
+	}
+}
+@-webkit-keyframes flyoff-left {
+	100% {
+		transform: translateX(-100%);
+	}
+}
