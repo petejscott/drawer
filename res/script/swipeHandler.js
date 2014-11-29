@@ -62,7 +62,7 @@ mobutil.swipeHandler = function(swipeConfiguration)
 		}           
 		isSwiping = true;
 		
-		callback(evt);
+		callback(evt, swipeConfiguration.opts);
 	}
 	
 	swipeConfiguration.element.addEventListener('touchend', function(evt)
