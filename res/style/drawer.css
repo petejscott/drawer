@@ -59,12 +59,14 @@ header,
 header .menuToggle {
 	margin-right: 0.5em;
 	cursor: pointer;
+	font-weight:normal;
 }
 header h1 { 
 	font-size:1rem;
 	line-height:3.5rem;
 	display:inline-block; 
 	margin:0; 
+	font-weight:normal;
 }
 
 #drawer {
@@ -82,6 +84,7 @@ header h1 {
 }
 #drawer header {
 	background:#eee;
+	color:#555;
 }
 #drawer.visible {
 	box-shadow:0 0 4px rgba(0,0,0,0.5);
