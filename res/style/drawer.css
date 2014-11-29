@@ -3,8 +3,11 @@
 		display:inline-block;
 		position: static;
 		box-shadow:0 0 4px -2px rgba(0,0,0,0.5);
-		transform: translateX(0);
 		flex-grow:1;
+	}
+	div.drawer[data-slide-in-dir="right"],
+	div.drawer[data-slide-in-dir="left"] {
+		transform: translateX(0);
 	}
 	article#main {
 		flex-grow:2;
