@@ -4,11 +4,7 @@
 
 	var manager = {};
 	
-	var CONST_ARTICLE_ID = "#main"; // single element allowed
-	var CONST_MENU_TOGGLE = ".menuToggle"; // multiple elements allowed
-	var CONST_MENU_DRAWER = "#menu"; // single element allowed
-	
-	var CONST_DRAWER_CLASS = ".drawer"; // multiple allowed (currently, only last in DOM will work)
+	var CONST_DRAWER_CLASS = ".drawer"; // multiple elements allowed
 
 	function getElement(el_id)
 	{
@@ -39,104 +35,96 @@
 	}
 	
 	function bindListeners()
-	{
-		bindOpen();
-		bindClose();
-		bindMenuToggle();
+	{	
+		var drawers = getElements(CONST_DRAWER_CLASS);
+		for (var i=0, len=drawers.length; i<len; i++)
+		{
+			var drawer = drawers[i];
+			bindOpen(drawer);
+			bindClose(drawer);
+			bindMenuToggle(drawer);
+		}
 	}
-	function bindMenuToggle()
+	function bindMenuToggle(drawer)
 	{
-		var menuToggle = getElements(CONST_MENU_TOGGLE);
-		var menuDrawer = getElement(CONST_MENU_DRAWER);
-		if (menuToggle.length === 0 || menuDrawer === null) return;
+		var toggle_selector = drawer.getAttribute("data-toggle-selector");
+		if (toggle_selector === null)
+		{
+			return;
+		}
+		var toggles = getElements(toggle_selector);
+		if (toggles.length === 0)
+		{
+			return;
+		}
 		
 		var callback = function(evt)
 		{
-			menuDrawer.classList.add('visible');
+			drawer.classList.toggle('visible');
 		}
-		for (var i=0, len=menuToggle.length; i<len; i++)
+		for (var i=0, len=toggles.length; i<len; i++)
 		{
-			menuToggle[i].addEventListener('click', callback);
+			toggles[i].addEventListener('click', callback);
 		}
 	}
-	function bindOpen()
-	{		
-		var drawers = getElements(CONST_DRAWER_CLASS);
-		var article = getElement(CONST_ARTICLE_ID);
-		if (article === null || drawers.length === 0) return;
+	function bindOpen(drawer)
+	{
+		var swipe_target_selector = drawer.getAttribute("data-swipe-target");
+		if (swipe_target_selector === null) return;
+		
+		var swipe_target = getElement(swipe_target_selector);
+		if (swipe_target === null) return;
 
-		for (var i=0, len=drawers.length; i<len; i++)
+		var in_dir = drawer.getAttribute("data-slide-in-dir");
+		
+		var callback = function(evt, opts)
 		{
-			var drawer = drawers[i];
-			var in_dir = drawer.getAttribute("data-slide-in-dir");
-			
-			var callback = function(evt, opts)
+			if (opts === null || opts.target_drawer === null) 
 			{
-				if (opts === null || opts.target_drawer === null) 
-				{
-					return;
-				}
-				var drawer = opts.target_drawer;
-				drawer.classList.add('visible');
+				return;
 			}
-			
-			var swipeHandler = new mobutil.swipeHandler({
-				element: article,
-				opts: { 'target_drawer' : drawer },
-				callback: callback,
-				direction: in_dir,
-				distance: 80
-			});
-		}		
-	}
-	function bindClose()
-	{		
-		var drawers = getElements(CONST_DRAWER_CLASS);
-		if (drawers.length === 0) return;
-
-		for (var i=0, len=drawers.length; i<len; i++)
-		{
-			var drawer = drawers[i];
-			var in_dir = drawer.getAttribute("data-slide-in-dir");
-			var out_dir = null;
-			
-			switch(in_dir)
-			{
-				case "left":
-					out_dir = "right";
-					break;
-				case "right":
-					out_dir = "left";
-					break;
-			}
-			
-			var callback = function(evt, opts)
-			{
-				if (opts === null || opts.target_drawer === null) 
-				{
-					return;
-				}
-				var drawer = opts.target_drawer;
-				drawer.classList.add('flyoff');
-
-				drawer.addEventListener(
-					'animationend',
-					manager.clear,
-					false);
-				drawer.addEventListener(
-					'webkitAnimationEnd',
-					manager.clear,
-					false);
-			}
-
-			var swipeHandler = new mobutil.swipeHandler({
-				element: drawer,
-				opts: { 'target_drawer' : drawer },
-				callback: callback,
-				direction: out_dir,
-				distance: 80
-			});
+			var drawer = opts.target_drawer;
+			drawer.classList.add('visible');
 		}
+		
+		var swipeHandler = new mobutil.swipeHandler({
+			element: swipe_target,
+			opts: { 'target_drawer' : drawer },
+			callback: callback,
+			direction: in_dir,
+			distance: 80
+		});
+	}
+	function bindClose(drawer)
+	{
+		var out_dir = drawer.getAttribute("data-slide-out-dir");
+		
+		var callback = function(evt, opts)
+		{
+			if (opts === null || opts.target_drawer === null) 
+			{
+				return;
+			}
+			var drawer = opts.target_drawer;
+			drawer.classList.add('flyoff');
+
+			drawer.addEventListener(
+				'animationend',
+				manager.clear,
+				false);
+			drawer.addEventListener(
+				'webkitAnimationEnd',
+				manager.clear,
+				false);
+		}
+
+		var swipeHandler = new mobutil.swipeHandler({
+			element: drawer,
+			opts: { 'target_drawer' : drawer },
+			callback: callback,
+			direction: out_dir,
+			distance: 80
+		});
 	}
 	
 	bindListeners();
