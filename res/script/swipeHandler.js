@@ -113,6 +113,8 @@ mobutil.swipeHandler = function(swipeConfiguration)
 				handleSwipe(swipeConfiguration.callback, evt);
 			}
 		}
+		
+		evt.preventDefault();
 	});
 
 }
