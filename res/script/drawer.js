@@ -1,6 +1,6 @@
 'use strict'
 
-; (function(win, mobutil) {
+; (function(win, swipeHandler) {
 
 	var manager = {};
 	
@@ -42,10 +42,10 @@
 			var drawer = drawers[i];
 			bindOpen(drawer);
 			bindClose(drawer);
-			bindMenuToggle(drawer);
+			bindToggle(drawer);
 		}
 	}
-	function bindMenuToggle(drawer)
+	function bindToggle(drawer)
 	{
 		var toggle_selector = drawer.getAttribute("data-toggle-selector");
 		if (toggle_selector === null)
@@ -61,6 +61,7 @@
 		var callback = function(evt)
 		{
 			drawer.classList.toggle('visible');
+			evt.preventDefault();
 		}
 		for (var i=0, len=toggles.length; i<len; i++)
 		{
@@ -129,4 +130,4 @@
 	
 	bindListeners();
 
-})(this, mobutil);
+})(this, mobutil.swipeHandler);
